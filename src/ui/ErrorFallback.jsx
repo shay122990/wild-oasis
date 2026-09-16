@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const StyledErrorFallback = styled.main`
+export const StyledErrorFallback = styled.main`
   height: 100vh;
   background-color: var(--color-grey-50);
   display: flex;
@@ -9,7 +9,7 @@ const StyledErrorFallback = styled.main`
   padding: 4.8rem;
 `;
 
-const Box = styled.div`
+export const Box = styled.div`
   /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);

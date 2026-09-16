@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const StyledModal = styled.div`
+export const StyledModal = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -12,7 +12,7 @@ const StyledModal = styled.div`
   transition: all 0.5s;
 `;
 
-const Overlay = styled.div`
+export const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -24,7 +24,7 @@ const Overlay = styled.div`
   transition: all 0.5s;
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   background: none;
   border: none;
   padding: 0.4rem;

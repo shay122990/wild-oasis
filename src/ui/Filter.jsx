@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-const StyledFilter = styled.div`
+export const StyledFilter = styled.div`
   border: 1px solid var(--color-grey-100);
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-sm);
@@ -10,7 +10,7 @@ const StyledFilter = styled.div`
   gap: 0.4rem;
 `;
 
-const FilterButton = styled.button`
+export const FilterButton = styled.button`
   background-color: var(--color-grey-0);
   border: none;
 

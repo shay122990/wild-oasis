@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-const StyledMenu = styled.div`
+export const StyledMenu = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
 `;
 
-const StyledToggle = styled.button`
+export const StyledToggle = styled.button`
   background: none;
   border: none;
   padding: 0.4rem;
@@ -25,7 +25,7 @@ const StyledToggle = styled.button`
   }
 `;
 
-const StyledList = styled.ul`
+export const StyledList = styled.ul`
   position: fixed;
 
   background-color: var(--color-grey-0);
@@ -36,7 +36,7 @@ const StyledList = styled.ul`
   top: ${(props) => props.position.y}px;
 `;
 
-const StyledButton = styled.button`
+export const StyledButton = styled.button`
   width: 100%;
   text-align: left;
   background: none;
