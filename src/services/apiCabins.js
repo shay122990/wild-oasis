@@ -17,6 +17,8 @@ export async function deleteCabin(id) {
 }
 
 export async function createEditCabin(newCabin, id) {
+  // console.log("newCabin:", newCabin);
+  // console.log("id:", id);
   const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl);
 
   let imageName;
@@ -36,16 +38,19 @@ export async function createEditCabin(newCabin, id) {
     query = query.insert([{ ...newCabin, image: imagePath }]);
   } else {
     query = query.update({ ...newCabin, image: imagePath }).eq("id", id);
+    //the ID is being used as the condition for finding the row, not as data you necessarily want to change.
   }
 
-  const { data, error } = await query.select().single();
+  const { data, error } = await query.select().single(); // return a single row object once updated
 
   if (error) {
     console.error(error);
     throw new Error("Cabin could not be created or updated");
   }
 
-  // Only upload if there is a NEW image
+  if (hasImagePath) return data;
+
+  // Only upload to Supabase STORAGE if there is a NEW image
   if (!hasImagePath) {
     const { error: storageError } = await supabase.storage
       .from("cabin-images")
