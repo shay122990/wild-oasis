@@ -10,7 +10,7 @@ import FormRow from "../../ui/FormRow";
 import { useCreateCabin } from "../../hooks/cabins/useCreateCabin";
 import { useUpdateCabin } from "../../hooks/cabins/useUpdateCabin";
 
-function CreateCabinForm({ cabinToEdit = {} }) {
+function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { id: editId, ...editValues } = cabinToEdit;
 
   const isEditSession = Boolean(editId);
@@ -38,6 +38,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         {
           onSuccess: () => {
             reset();
+            () => onCloseModal?.();
           },
         },
       );
@@ -49,7 +50,9 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         },
         {
           onSuccess: (data) => {
-            (console.log(data), reset());
+            console.log(data);
+            reset();
+            () => onCloseModal?.();
           },
         },
       );
@@ -60,7 +63,10 @@ function CreateCabinForm({ cabinToEdit = {} }) {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form
+      onSubmit={handleSubmit(onSubmit, onError)}
+      type={onCloseModal ? "modal" : "regular"}
+    >
       <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input
           type="text"
@@ -93,6 +99,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
           id="regularPrice"
           {...register("regularPrice", {
             required: "This field is required",
+            // valueAsNumber: true,
             min: {
               value: 1,
               message: "Price should be at least 1",
@@ -109,6 +116,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
           defaultValue={0}
           {...register("discount", {
             required: "This field is required",
+            // valueAsNumber: true,
             validate: (value) =>
               value <= getValues().regularPrice ||
               "Discount should be less than regular price",
@@ -148,6 +156,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
           variation="secondary"
           type="reset"
           disabled={isWorking}
+          onClick={() => onCloseModal?.()}
         >
           Cancel
         </Button>

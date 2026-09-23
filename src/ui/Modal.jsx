@@ -1,6 +1,10 @@
+import { cloneElement, useContext, useState } from "react";
+import { createContext } from "react";
+import { createPortal } from "react-dom";
+import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
 
-export const StyledModal = styled.div`
+const StyledModal = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -12,7 +16,7 @@ export const StyledModal = styled.div`
   transition: all 0.5s;
 `;
 
-export const Overlay = styled.div`
+const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -24,7 +28,7 @@ export const Overlay = styled.div`
   transition: all 0.5s;
 `;
 
-export const Button = styled.button`
+const Button = styled.button`
   background: none;
   border: none;
   padding: 0.4rem;
@@ -48,3 +52,44 @@ export const Button = styled.button`
     color: var(--color-grey-500);
   }
 `;
+
+const ModalContext = createContext();
+
+function Modal({ children }) {
+  const [openName, setOpenName] = useState("");
+
+  const close = () => setOpenName("");
+  const open = setOpenName;
+
+  return (
+    <ModalContext.Provider value={{ openName, close, open }}>
+      {children}
+    </ModalContext.Provider>
+  );
+}
+
+function Open({ children, opens }) {
+  const { open } = useContext(ModalContext);
+  return cloneElement(children, { onClick: () => open(opens) });
+}
+
+function Window({ children, name }) {
+  const { openName, close } = useContext(ModalContext);
+  if (name !== openName) return null;
+  return createPortal(
+    // making sure modal is not cut off from overflow: hidden property on a parent component
+    <Overlay>
+      <StyledModal>
+        <Button onClick={close}>
+          <HiXMark />
+        </Button>
+        <div>{cloneElement(children, { onCloseModal: close })}</div>
+      </StyledModal>
+    </Overlay>,
+    document.body,
+  );
+}
+
+Modal.Open = Open;
+Modal.Window = Window;
+export default Modal;
