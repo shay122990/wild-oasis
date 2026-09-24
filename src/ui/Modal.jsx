@@ -1,8 +1,8 @@
-import { cloneElement, useContext, useState } from "react";
-import { createContext } from "react";
+import { cloneElement, useContext, useState, createContext } from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
+import { useClickOutside } from "../hooks/useClickOutside";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -75,11 +75,15 @@ function Open({ children, opens }) {
 
 function Window({ children, name }) {
   const { openName, close } = useContext(ModalContext);
+
+  const ref = useClickOutside(close);
+
   if (name !== openName) return null;
+
   return createPortal(
     // making sure modal is not cut off from overflow: hidden property on a parent component
     <Overlay>
-      <StyledModal>
+      <StyledModal ref={ref}>
         <Button onClick={close}>
           <HiXMark />
         </Button>
