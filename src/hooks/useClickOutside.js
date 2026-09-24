@@ -5,6 +5,7 @@ export function useClickOutside(close) {
 
   useEffect(() => {
     function handleClick(e) {
+      // If the modal exists AND the click was NOT inside the modal...
       if (ref.current && !ref.current.contains(e.target)) close();
     }
 
