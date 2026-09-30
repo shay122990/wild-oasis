@@ -1,8 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { noop, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
+import { PAGE_SIZE } from "../../utils/constants";
 
 export function useBookings() {
+  const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
   //filter
@@ -17,14 +19,49 @@ export function useBookings() {
   const [field, direction] = sortByRaw.split("-");
   const sortBy = { field, direction };
 
+  //pagination
+  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
+
+  // query
   const {
     isPending,
-    data: bookings,
+    data: { data: bookings, count } = {},
     error,
-    count,
   } = useQuery({
-    queryKey: ["bookings", filter, sortBy],
-    queryFn: () => getBookings({ filter, sortBy }),
+    queryKey: ["bookings", filter, sortBy, page],
+    queryFn: () => getBookings({ filter, sortBy, page }),
   });
+
+  // PRE-FETCHING
+  const pageCount = Math.ceil(count / PAGE_SIZE);
+
+  if (page < pageCount) {
+    queryClient
+      .query({
+        queryKey: ["bookings", filter, sortBy, page + 1],
+        queryFn: () =>
+          getBookings({
+            filter,
+            sortBy,
+            page: page + 1,
+          }),
+      })
+      .catch(noop);
+  }
+  // noop - a function that does nothing - if promise fails do nothing
+
+  if (page > 1) {
+    queryClient
+      .query({
+        queryKey: ["bookings", filter, sortBy, page - 1],
+        queryFn: () =>
+          getBookings({
+            filter,
+            sortBy,
+            page: page - 1,
+          }),
+      })
+      .catch(noop);
+  }
   return { isPending, bookings, error, count };
 }
