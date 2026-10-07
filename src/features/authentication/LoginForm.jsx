@@ -9,7 +9,7 @@ import { useLogin } from "../../hooks/authentication/useLogin";
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isPending } = useLogin();
+  const { login, isLoggingIn } = useLogin();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -31,11 +31,10 @@ function LoginForm() {
         <Input
           type="email"
           id="email"
-          // This makes this form better for password managers
           autoComplete="username"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          disabled={isPending}
+          disabled={isLoggingIn}
         />
       </FormRowVertical>
       <FormRowVertical label="Password" orientation="vertical">
@@ -45,12 +44,12 @@ function LoginForm() {
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          disabled={isPending}
+          disabled={isLoggingIn}
         />
       </FormRowVertical>
       <FormRowVertical orientation="vertical">
-        <Button size="large" variation="primary" disabled={isPending}>
-          {!isPending ? "Login" : <SpinnerMini />}
+        <Button size="large" variation="primary" disabled={isLoggingIn}>
+          {!isLoggingIn ? "Login" : <SpinnerMini />}
         </Button>
       </FormRowVertical>
     </Form>
