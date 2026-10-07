@@ -81,7 +81,12 @@ function SignupForm() {
       </FormRow>
 
       <FormRow>
-        <Button variation="secondary" type="reset" size="medium">
+        <Button
+          variation="secondary"
+          type="reset"
+          size="medium"
+          onClick={reset}
+        >
           Cancel
         </Button>
         <Button variation="primary" size="medium">
