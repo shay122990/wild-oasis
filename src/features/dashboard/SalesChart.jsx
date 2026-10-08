@@ -1,4 +1,4 @@
-import { useDarkMode } from "context/DarkModeContext";
+import { useDarkMode } from "../../context/DarkModeContext";
 import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
 import {
   Area,
@@ -10,7 +10,7 @@ import {
   YAxis,
 } from "recharts";
 import styled from "styled-components";
-import Heading from "ui/Heading";
+import Heading from "../../ui/Heading";
 import DashboardBox from "./DashboardBox";
 
 const StyledSalesChart = styled(DashboardBox)`
@@ -27,8 +27,11 @@ function SalesChart({ bookings, numDays }) {
   // In the chart we need to set colors, but we can't do it based on CSS variables, because we have no access to them here. So let's set them manually
   const { isDarkMode } = useDarkMode();
 
+  // Make sure numDays is a valid number
+  const days = Number(numDays) || 7;
+
   const allDates = eachDayOfInterval({
-    start: subDays(new Date(), numDays - 1),
+    start: subDays(new Date(), days - 1),
     end: new Date(),
   });
 
@@ -61,8 +64,8 @@ function SalesChart({ bookings, numDays }) {
   return (
     <StyledSalesChart>
       <Heading type="h2">
-        Sales from {format(allDates.at(0), "MMM dd yyyy")} &mdash;{" "}
-        {format(allDates.at(-1), "MMM dd yyyy")}
+        Sales from {format(allDates[0], "MMM dd yyyy")} &mdash;{" "}
+        {format(allDates[allDates.length - 1], "MMM dd yyyy")}
       </Heading>
 
       <ResponsiveContainer width="100%" height={300}>
@@ -73,13 +76,17 @@ function SalesChart({ bookings, numDays }) {
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
+
           <YAxis
             unit="$"
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
+
           <CartesianGrid strokeDasharray="4" />
+
           <Tooltip contentStyle={{ backgroundColor: colors.background }} />
+
           <Area
             type="monotone"
             dataKey="totalSales"
@@ -91,6 +98,7 @@ function SalesChart({ bookings, numDays }) {
             unit="$"
             name="Total sales"
           />
+
           <Area
             type="monotone"
             dataKey="extrasSales"
