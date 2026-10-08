@@ -23,12 +23,13 @@ We need to distinguish between two types of data here:
 */
 
 function DashboardLayout() {
-  const { isLoading: isLoading1, bookings, numDays } = useRecentBookings();
-  const { isLoading: isLoading2, confirmedStays } = useRecentStays();
-  const { isLoading: isLoading3, cabins } = useCabins();
+  const { isPending: isLoading1, bookings, numDays } = useRecentBookings();
+  const { isPending: isLoading2, confirmedStays } = useRecentStays();
+  const { isPending: isLoading3, cabins } = useCabins();
 
   if (isLoading1 || isLoading2 || isLoading3) return <Spinner />;
 
+  console.log(bookings, confirmedStays);
   return (
     <StyledDashboardLayout>
       <Stats
