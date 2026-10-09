@@ -137,6 +137,8 @@ function Uploader() {
       <h3>DEV AREA</h3>
 
       <Button
+        size="small"
+        variation="primary"
         onClick={uploadAll}
         // To prevent accidental clicks. Remove to run once!
         disabled={isLoading}
@@ -149,10 +151,15 @@ function Uploader() {
         <em>(Cabin images need to be uploaded manually)</em>
       </p>
       <hr />
-      <Button onClick={uploadBookings} disabled={isLoading}>
+      <Button
+        size="small"
+        variation="primary"
+        onClick={uploadBookings}
+        disabled={isLoading}
+      >
         Upload CURRENT bookings
       </Button>
-      <p>You can run this every day you develop the app</p>
+      {/* <p>You can run this every day you develop the app</p> */}
     </div>
   );
 }

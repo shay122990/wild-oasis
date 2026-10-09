@@ -39,7 +39,7 @@ const NoActivity = styled.p`
   margin-top: 0.8rem;
 `;
 
-function Today() {
+function TodayActivity() {
   const { isPending, stays } = useActivityTodayStays();
 
   return (
@@ -67,4 +67,4 @@ function Today() {
   );
 }
 
-export default Today;
+export default TodayActivity;

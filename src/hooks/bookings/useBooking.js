@@ -12,6 +12,7 @@ export function useBooking() {
     queryKey: ["booking", bookingId],
     queryFn: () => getBooking(bookingId),
     retry: false,
+    // throwOnError: true,
   });
 
   return { isPending, booking, error };
